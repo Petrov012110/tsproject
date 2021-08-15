@@ -1,12 +1,14 @@
 {
     "compilerOptions": {
-      "module": "commonjs",
+      "module": "es6",
       "esModuleInterop": true,
       "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
       "target": "es6",
       "moduleResolution": "node",
       "sourceMap": true,
       "outDir": "./dist"
     },
-    "lib": ["es2015"]
+    "lib": ["es2015"],
+    "include": ["node_modules/reflect-metadata"]
   }
