@@ -10,5 +10,8 @@
       "outDir": "./dist"
     },
     "lib": ["es2015"],
-    "include": ["node_modules/reflect-metadata"]
+    "include": [
+      "src/*",
+      "node_modules/reflect-metadata"
+    ]
   }

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "compy-reflect": "copyfiles -f ./node_modules/reflect-metadata/Reflect.js ./dist",
     "serve": "browser-sync start --server --files 'src/*.js'"
   },
   "author": "petrov",

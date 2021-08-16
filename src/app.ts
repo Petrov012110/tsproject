@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+// import 'reflect-metadata';
 
 function DecorateRu(target: Object, method: string, descriptor: PropertyDescriptor) {
     let originalMethod = descriptor.value;
@@ -164,42 +164,62 @@ const x = {
     year: 2014,
 };
 
-console.log(getProperty(x, "m")); 
+console.log(getProperty(x, "m"));
 
-function validate(ValueExample: Function, arg: string) {
+function validate(_ValueExample: typeof ValueExample1, arg: string) {
     return function (target: Object, propKey: string) {
-        let prop = Reflect.getMetadata("design:type", target, propKey)
-        return prop
+        let newClass = new _ValueExample();
+        
+        
+        let value: number;
+        Object.defineProperty(target, propKey, {
+            get: () => {
+                console.log("Inside get accessor");
+                return value;
+            },
+            set: (v: any) => {
+                console.log();
+        console.log("Type", typeof newClass.id);
+                
+                if(typeof v === "number") {
+                    value = v;
+                }
+                console.log("Inside set accessor");
+            }
+        })
+
+
+
     }
-      
+
 }
 class ValueExample1 {
     public value: string;
     public id: number;
-	public constructor(value?: string, id?: number) {
-		this.value = value;
-		this.id = id;
-	}
+    public constructor(value?: string, id?: number) {
+        this.value = value;
+        this.id = id;
+    }
 }
- 
+
 class ValueExample2 {
     public undefinedProp: undefined;
     public booleanProp: boolean;
-	public constructor(undefinedProp?: undefined, booleanProp?: boolean) {
-		this.undefinedProp = undefinedProp;
-		this.booleanProp = booleanProp;
-	}
+    public constructor(undefinedProp?: undefined, booleanProp?: boolean) {
+        this.undefinedProp = undefinedProp;
+        this.booleanProp = booleanProp;
+    }
 }
 
 class Example {
     @validate(ValueExample1, "id")
     public propValueExample1: any;
- 
-    @validate(ValueExample2, "booleanProp")
+
+    // @validate(ValueExample2, "booleanProp")
     public propValueExample2: any;
 }
 
 let ex = new Example();
 
-ex.propValueExample1 = "2"
+ex.propValueExample1 = 2
 
