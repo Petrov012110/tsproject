@@ -84,70 +84,73 @@ function decorator(target: Object, propertyKey: string): any {
 
 
 
-// abstract class Control<T> {
-//     public name: string = "";
+abstract class Control<T> {
+    public name: string = "";
 
-//     protected value: T;
-//     /**взять значение из контрола */
-//     public abstract getValue(): T;
-//     /**установить значение в контрол */
-//     public abstract setValue(val: T): void;
-// }
-// /**Класс описывает TextBox контрол */
-// class TextBox extends Control<string> {
-//     public getValue(): string {
-//         throw new Error("Method not implemented.");
-//     }
-//     public setValue(val: string): void {
-//         throw new Error("Method not implemented.");
-//     }
-// }
-// /**value контрола selectBox */
-// class SelectItem {
-//     public value: string;
-//     public id: number;
-// }
+    protected value: T;
+    /**взять значение из контрола */
+    public abstract getValue(): T;
+    /**установить значение в контрол */
+    public abstract setValue(val: T): void;
+}
+/**Класс описывает TextBox контрол */
+class TextBox extends Control<string> {
+    public getValue(): string {
+        return this.value
+    }
+    public setValue(val: string): void {
+        this.value = val
+    }
+}
+/**value контрола selectBox */
+class SelectItem {
+    public value: string;
+    public id: number;
+}
 
-// /**Класс описывает SelectBox контрол */
-// class SelectBox extends Control<SelectItem> {
-//     public getValue(): SelectItem {
-//         throw new Error("Method not implemented.");
-//     }
-//     public setValue(val: SelectItem): void {
-//         throw new Error("Method not implemented.");
-//     }
-// }
+/**Класс описывает SelectBox контрол */
+class SelectBox extends Control<SelectItem> {
+    public getValue(): SelectItem {
+        return this.value
+    }
+    public setValue(val: SelectItem): void {
+        this.value = val 
+    }
+}
 
-// class Container {
-//     public instance: Control<any>;
-//     public type: string;
-// }
+class Container {
+    public instance: Control<any>;
+    public type: string;
+}
 
-// /**Фабрика которая отвечает за создание экземпляров контролов */
-// class FactoryControl {
-//     /**Список соотношений тип - инстанс типа */
-//     private _collection: Array<Container>;
+/**Фабрика которая отвечает за создание экземпляров контролов */
+class FactoryControl {
+    /**Список соотношений тип - инстанс типа */
+    private _collection: Array<Container>;
 
-//     constructor() {
-//         this._collection = [];
-//     }
+    constructor() {
+        this._collection = [];
+    }
 
-//     public register<T>(type: T) {
-//     }
+    public register<T extends SelectBox | TextBox>(type: T) {
+        if(!this.existType(typeof type)) {
+            this._collection.push({instance: type, type: typeof type})
+        }
+    }
 
-//     public getInstance<T extends Control<any>>(type: T): T{
-//         return 
-//     }
+    public getInstance<T extends typeof SelectBox>(type: T): Control<T> {
+        return this._collection.find(item => item.instance === type.prototype).instance
+    }
 
-//     private existType(type: string) {
-//         return this._collection.filter(g => g.type === type).length > 0;
-//     }
-// }
+    private existType(type: string): boolean {
+        return this._collection.filter(g => g.type === type).length > 0;
+    }
+}
 
-// const factory = new FactoryControl();
-// factory.register(SelectBox);
+const factory = new FactoryControl();
+factory.register(SelectBox);
 
-// const selectBoxInstance = factory.getInstance(SelectBox);
+const selectBoxInstance = factory.getInstance(SelectBox);
 
 // selectBoxInstance.setValue("sdfsdf") // компилятор TS не пропускает
 // selectBoxInstance.setValue(new SelectItem()) // компилятор TS пропускает
@@ -166,32 +169,35 @@ const x = {
 
 console.log(getProperty(x, "m"));
 
-function validate(_ValueExample: typeof ValueExample1, arg: string) {
+function validate(_ValueExample: typeof ValueExample1, arg: string): any {
+    // _ValueExample[arg]
+    console.log(_ValueExample.prototype.id);
+    
     return function (target: Object, propKey: string) {
-        let newClass = new _ValueExample();
-        
-        
-        let value: number;
+        let val = target[propKey]
+        const getter = () => {
+            return val
+        }
+        const setter = (value) => {
+            let newClass = new _ValueExample( arg, value)
+            console.log(newClass);
+            
+            
+            console.log(typeof value);
+            
+            val = value
+        }
         Object.defineProperty(target, propKey, {
-            get: () => {
-                console.log("Inside get accessor");
-                return value;
-            },
-            set: (v: any) => {
-                console.log();
-        console.log("Type", typeof newClass.id);
-                
-                if(typeof v === "number") {
-                    value = v;
-                }
-                console.log("Inside set accessor");
-            }
-        })
-
-
-
+            get: getter,
+            set: setter
+        });
+        
+        // let newClass = new _ValueExample();
+        // newClass.id
+        // let propType = Reflect.getMetadata("design:type", target, propKey);
+        // console.log(propType);
+        
     }
-
 }
 class ValueExample1 {
     public value: string;
@@ -201,7 +207,6 @@ class ValueExample1 {
         this.id = id;
     }
 }
-
 class ValueExample2 {
     public undefinedProp: undefined;
     public booleanProp: boolean;
@@ -210,7 +215,6 @@ class ValueExample2 {
         this.booleanProp = booleanProp;
     }
 }
-
 class Example {
     @validate(ValueExample1, "id")
     public propValueExample1: any;
@@ -221,5 +225,5 @@ class Example {
 
 let ex = new Example();
 
-ex.propValueExample1 = 2
+ex.propValueExample1 = "s"
 
