@@ -1,5 +1,7 @@
 // // import 'reflect-metadata';
 
+
+
 // function DecorateRu(target: Object, method: string, descriptor: PropertyDescriptor) {
 //     let originalMethod = descriptor.value;
 //     descriptor.value = function (...args) {
@@ -172,7 +174,7 @@
 // function validate(_ValueExample: typeof ValueExample1, arg: string): any {
 //     // _ValueExample[arg]
 //     console.log(_ValueExample.prototype.id);
-    
+
 //     return function (target: Object, propKey: string) {
 //         let val = target[propKey]
 //         const getter = () => {
@@ -181,22 +183,22 @@
 //         const setter = (value) => {
 //             let newClass = new _ValueExample( arg, value)
 //             console.log(newClass);
-            
-            
+
+
 //             console.log(typeof value);
-            
+
 //             val = value
 //         }
 //         Object.defineProperty(target, propKey, {
 //             get: getter,
 //             set: setter
 //         });
-        
+
 //         // let newClass = new _ValueExample();
 //         // newClass.id
 //         // let propType = Reflect.getMetadata("design:type", target, propKey);
 //         // console.log(propType);
-        
+
 //     }
 // }
 // class ValueExample1 {
@@ -226,5 +228,52 @@
 // let ex = new Example();
 
 // ex.propValueExample1 = "s"
+console.log(Custom.user);
+Custom.user.upAgeByYear();
 
-let user = new User("Михаил", 18)
+// let setValue = new SettingValue("p1", "p2")
+
+// let set = new Setting("key", setValue)
+
+// let example = new Example(set)
+
+// console.log(example);
+
+interface IUser {
+    name: string;
+    id: number;
+}
+
+class HttpError extends Error {
+    public response: Response;
+
+    constructor(response: Response) {
+        super(`${response.status} for ${response.url}`);
+        this.response = response;
+    }
+}
+
+const req = async (url: string) => {
+    let response = await fetch(url);
+    if (response.status == 200) {
+        return await response.json();
+    } else {
+        throw new HttpError(response);
+    }
+}
+
+const getGitHub = async () => {
+    let name = prompt("Введите логин на GitHub?", "");
+    try {
+        let user = await req(`https://api.github.com/users/${name}`);
+        document.write(`Полное имя: ${user.name}, уникальный номер: ${user.id}.`);
+    } catch(err) {
+        if (err instanceof HttpError && err.response.status == 404) {
+            document.write("Такого пользователя не существует.");
+        } else {
+            throw err;
+        }
+    }
+}
+
+getGitHub();
