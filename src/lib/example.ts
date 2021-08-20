@@ -1,6 +1,6 @@
-import Setting  from "./setting";
+import {Setting}   from "./setting";
 
-export default class Example {
+class Example {
     public title: string;
     public id: number;
     private _setting: Setting;
@@ -9,3 +9,5 @@ export default class Example {
         this._setting = s;
     }
 }
+
+export { Example}

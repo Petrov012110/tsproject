@@ -1,6 +1,6 @@
-import SettingValue from "./settingValue";
+import { SettingValue } from "./settingValue";
 
-export default class Setting {
+ class Setting {
     public key: string;
     public value: SettingValue;
  
@@ -9,3 +9,5 @@ export default class Setting {
         this.value = ov;
     }
 }
+
+export {Setting}

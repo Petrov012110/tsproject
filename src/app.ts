@@ -1,4 +1,10 @@
+import * as process from "./lib"
 // // import 'reflect-metadata';
+
+
+let b = new process.SettingValue("p2", "p1")
+console.log(b);
+console.log("dsdd");
 
 
 
@@ -228,8 +234,8 @@
 // let ex = new Example();
 
 // ex.propValueExample1 = "s"
-console.log(Custom.user);
-Custom.user.upAgeByYear();
+// console.log(Custom.user);
+// Custom.user.upAgeByYear();
 
 // let setValue = new SettingValue("p1", "p2")
 
@@ -239,41 +245,41 @@ Custom.user.upAgeByYear();
 
 // console.log(example);
 
-interface IUser {
-    name: string;
-    id: number;
-}
+// interface IUser {
+//     name: string;
+//     id: number;
+// }
 
-class HttpError extends Error {
-    public response: Response;
+// class HttpError extends Error {
+//     public response: Response;
 
-    constructor(response: Response) {
-        super(`${response.status} for ${response.url}`);
-        this.response = response;
-    }
-}
+//     constructor(response: Response) {
+//         super(`${response.status} for ${response.url}`);
+//         this.response = response;
+//     }
+// }
 
-const req = async (url: string) => {
-    let response = await fetch(url);
-    if (response.status == 200) {
-        return await response.json();
-    } else {
-        throw new HttpError(response);
-    }
-}
+// const req = async (url: string) => {
+//     let response = await fetch(url);
+//     if (response.status == 200) {
+//         return await response.json();
+//     } else {
+//         throw new HttpError(response);
+//     }
+// }
 
-const getGitHub = async () => {
-    let name = prompt("Введите логин на GitHub?", "");
-    try {
-        let user = await req(`https://api.github.com/users/${name}`);
-        document.write(`Полное имя: ${user.name}, уникальный номер: ${user.id}.`);
-    } catch(err) {
-        if (err instanceof HttpError && err.response.status == 404) {
-            document.write("Такого пользователя не существует.");
-        } else {
-            throw err;
-        }
-    }
-}
+// const getGitHub = async () => {
+//     let name = prompt("Введите логин на GitHub?", "");
+//     try {
+//         let user = await req(`https://api.github.com/users/${name}`);
+//         document.write(`Полное имя: ${user.name}, уникальный номер: ${user.id}.`);
+//     } catch(err) {
+//         if (err instanceof HttpError && err.response.status == 404) {
+//             document.write("Такого пользователя не существует.");
+//         } else {
+//             throw err;
+//         }
+//     }
+// }
 
-getGitHub();
+// getGitHub();

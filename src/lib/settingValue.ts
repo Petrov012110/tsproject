@@ -1,4 +1,4 @@
-export default class SettingValue {
+class SettingValue {
     public property1: string;
     public property2: string;
  
@@ -7,3 +7,5 @@ export default class SettingValue {
         this.property2 = p2;
     }
 }
+
+export {SettingValue}

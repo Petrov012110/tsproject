@@ -14,5 +14,5 @@
       "index.d.ts",
       "src/*",
       "node_modules/reflect-metadata"
-    ]
+, "src/lib/setting.ts", "src/lib/settingValue.ts", "src/lib/example.ts"    ]
   }
