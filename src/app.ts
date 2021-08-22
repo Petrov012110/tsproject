@@ -172,7 +172,7 @@
 // function validate(_ValueExample: typeof ValueExample1, arg: string): any {
 //     // _ValueExample[arg]
 //     console.log(_ValueExample.prototype.id);
-    
+
 //     return function (target: Object, propKey: string) {
 //         let val = target[propKey]
 //         const getter = () => {
@@ -181,22 +181,22 @@
 //         const setter = (value) => {
 //             let newClass = new _ValueExample( arg, value)
 //             console.log(newClass);
-            
-            
+
+
 //             console.log(typeof value);
-            
+
 //             val = value
 //         }
 //         Object.defineProperty(target, propKey, {
 //             get: getter,
 //             set: setter
 //         });
-        
+
 //         // let newClass = new _ValueExample();
 //         // newClass.id
 //         // let propType = Reflect.getMetadata("design:type", target, propKey);
 //         // console.log(propType);
-        
+
 //     }
 // }
 // class ValueExample1 {
@@ -227,4 +227,56 @@
 
 // ex.propValueExample1 = "s"
 
-let user = new User("Михаил", 18)
+// let user = new User("Михаил", 18)
+
+console.log(":sssxxxxwww");
+
+interface IFileCreateResponse {
+    key: string
+}
+
+
+class gitRequest {
+
+    private get _domain(): string {
+        return "https://docs.github.com";
+    }
+
+    private get _prefixBlob(): string {
+        return "/en/rest/reference/git#get-a-blob";
+    }
+    
+    private get _prefixAuth(): string {
+        return "/en/developers/apps/authenticating-with-github-apps#authenticating-as-an-installation";
+    }
+    constructor(parameters) {
+
+    }
+
+    private getReqOptions(method: string): RequestInit {
+        return {
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            method: method
+        }
+    }
+
+    public async getBlob(): Promise<void> {
+        let options: RequestInit = this.getReqOptions("GET")
+        let response = await fetch(`${this._domain}${this._prefixAuth}`, options)
+        console.log((await response.blob()).text());
+        
+        let bl = <IFileCreateResponse> await response.json()
+        console.log("KEY", bl.key);
+        
+        
+        let blob = new Blob([`${bl}`], {type: "text/html"})
+        console.log(blob);
+        
+        // return new Promise(resolve => resolve())
+
+    }
+}
+
+
