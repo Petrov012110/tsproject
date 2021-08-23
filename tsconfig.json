@@ -6,13 +6,11 @@
       "emitDecoratorMetadata": true,
       "target": "es6",
       "moduleResolution": "node",
-      "sourceMap": true,
+      "sourceMap": false,
       "outDir": "./dist"
     },
     "lib": ["es2015"],
     "include": [
-      "index.d.ts",
       "src/*",
-      "node_modules/reflect-metadata"
-, "src/lib/setting.ts", "src/lib/settingValue.ts", "src/lib/example.ts"    ]
-  }
+      "node_modules/reflect-metadata"   ]
+}
